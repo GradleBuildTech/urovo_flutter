@@ -39,6 +39,11 @@ class UrovoScannerService {
       onError: (error) {
         onError?.call(error);
       },
+      onDone: () {
+        // Handle stream completion if needed
+        // For example, you can stop scanning here if needed
+        stopScan();
+      },
       cancelOnError: true,
     );
   }
