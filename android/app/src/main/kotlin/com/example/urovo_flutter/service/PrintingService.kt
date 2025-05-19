@@ -6,43 +6,49 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PrintingService(
-    val printerProvider: PrinterProviderImpl
-) {
-    private var isPrinting = false
-
+internal class PrintingService(
+    private val printerProvider: PrinterProviderImpl
+) : BaseService() {
     companion object {
         const val METHOD_PRINT = "print"
     }
 
-    fun onStartPrint() {
+     override fun onStart(arg: Any?, errorCallBack: ((String) -> Unit)?) {
         println("onStartPrint")
-       CoroutineScope(Dispatchers.IO).launch {
-           try {
-               if (isPrinting) return@launch
-               isPrinting = true
-               printerProvider.setGray(0)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                if (isRunning) return@launch
+                isRunning = true
+                printerProvider.setGray(0)
 
-               var format = Bundle()
+                var format = Bundle()
 
-               format = Bundle().apply {
-                   putInt("font", 1)
-                   putInt("align", 1)
-                   putBoolean("fontBold", true)
-                   putInt("lineHeight", 10)
-               }
-               printerProvider.addText(format, "CENTER  CENTERCENTERCENTERCENTERCENTERCENTERCENTER")
-               printerProvider.feedLine(-1)
-               val result = printerProvider.startPrint()
+                format = Bundle().apply {
+                    putInt("font", 1)
+                    putInt("align", 1)
+                    putBoolean("fontBold", true)
+                    putInt("lineHeight", 10)
+                }
+                printerProvider.addText(
+                    format,
+                    "CENTER  CENTERCENTERCENTERCENTERCENTERCENTERCENTER"
+                )
+                printerProvider.feedLine(-1)
+                val result = printerProvider.startPrint()
 
 
-           } catch (e: Exception) {
-               e.printStackTrace()
-               isPrinting = false
-           }
-       }
-       isPrinting = false
-       printerProvider.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                isRunning = false
+                errorCallBack?.invoke(e.message ?: "Print error")
+            }
+        }
+         isRunning = false
+        printerProvider.close()
+    }
+
+    override fun onStop() {
+        TODO("Not yet implemented")
     }
 
 }

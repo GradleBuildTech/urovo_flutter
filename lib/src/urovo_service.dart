@@ -1,5 +1,9 @@
+import 'package:urovo_flutter/src/method/print/urovo_print_mixin.dart';
+
+import 'method/urovo_beeper_mixin.dart';
+
 ///Singleton
-class UrovoService {
+class UrovoService with UrovoPrintMixin, UrovoBeeperMixin {
   static final UrovoService _instance = UrovoService._internal();
 
   factory UrovoService() {
