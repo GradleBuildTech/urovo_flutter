@@ -23,6 +23,9 @@ class UrovoScannerService {
 
   StreamSubscription? _subscription;
 
+  /// Starts scanning for barcodes.
+  /// [onScanResult] is a callback function that will be called with the
+  /// scan result as a string.
   void startScan({
     Function(String)? onScanResult,
     Function(Object)? onError,
@@ -40,6 +43,8 @@ class UrovoScannerService {
     );
   }
 
+  /// Stops scanning for barcodes.
+  /// This method cancels the subscription to the scan events.
   void stopScan() {
     _subscription?.cancel();
     _subscription = null;
