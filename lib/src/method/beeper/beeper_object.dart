@@ -8,9 +8,6 @@ class BeeperObject {
   });
 
   Map<String, dynamic> get toJson {
-    return {
-      'cnts': cnts,
-      'msecTime': msecTime,
-    };
+    return {'cnts': cnts, 'msecTime': msecTime};
   }
 }

@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import com.example.urovo_flutter.service.BeeperService
 import com.example.urovo_flutter.service.PrintingService
+import com.example.urovo_flutter.service.ScannerService
 import com.example.urovo_flutter.utils.ChannelTag
 import com.urovo.sdk.beeper.BeeperImpl
 import com.urovo.sdk.print.PrinterProviderImpl
+import com.urovo.sdk.scanner.InnerScannerImpl
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +43,14 @@ class MainActivity : FlutterActivity() {
                 }
             }
         }
+
+        EventChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            ChannelTag.SCANNER_CHANNEL
+        ).setStreamHandler(ScannerService(
+            innerScannerImpl = InnerScannerImpl.getInstance(this),
+            context = this
+        ))
     }
 
 
