@@ -1,15 +1,11 @@
-package com.example.urovo_flutter.service
+package com.example.urovo_flutter.module.urovo.service
 
 import com.example.urovo_flutter.model.toBeeperModel
 import com.urovo.sdk.beeper.BeeperImpl
 
-internal class BeeperService(
+internal class UrovoBeeperService(
     private val beeperProvider: BeeperImpl
-): BaseService() {
-    companion object {
-        const val METHOD_BEEP = "beep"
-    }
-
+): UrovoBaseService() {
     override fun onStart(arg: Any?, errorCallBack: ((String) -> Unit)?) {
         if(arg is Map<*, *>) {
             val model = arg.toBeeperModel()

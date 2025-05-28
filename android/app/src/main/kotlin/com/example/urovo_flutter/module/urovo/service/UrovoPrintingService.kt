@@ -1,4 +1,4 @@
-package com.example.urovo_flutter.service
+package com.example.urovo_flutter.module.urovo.service
 
 import android.os.Bundle
 import com.urovo.sdk.print.PrinterProviderImpl
@@ -6,13 +6,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-internal class PrintingService(
+internal class UrovoPrintingService(
     private val printerProvider: PrinterProviderImpl
-) : BaseService() {
-    companion object {
-        const val METHOD_PRINT = "print"
-    }
-
+) : UrovoBaseService() {
      override fun onStart(arg: Any?, errorCallBack: ((String) -> Unit)?) {
         println("onStartPrint")
         CoroutineScope(Dispatchers.IO).launch {
@@ -44,7 +40,7 @@ internal class PrintingService(
             }
         }
          isRunning = false
-        printerProvider.close()
+         printerProvider.close()
     }
 
     override fun onStop() {
