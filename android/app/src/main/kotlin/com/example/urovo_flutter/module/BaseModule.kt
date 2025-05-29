@@ -6,22 +6,6 @@ import io.flutter.plugin.common.MethodChannel
 
 abstract class BaseModule {
     /**
-     * This method is called to perform an action based on the method name and argument provided.
-     * It should be implemented by subclasses to handle specific actions.
-     *
-     * @param context The context in which the action is performed.
-     * @param method The name of the method to be executed.
-     * @param argument The argument to be passed to the method.
-     * @param result The result callback to return the result of the action.
-     */
-    abstract fun doAction(
-        context: Context,
-        method: String,
-        argument: Any,
-        result: MethodChannel.Result
-    )
-
-    /**
      * This method is called to provide a stream handler for the scanner events.
      * It should be implemented by subclasses to handle scanner events.
      *
@@ -30,4 +14,29 @@ abstract class BaseModule {
      */
     abstract fun scannerStream(context: Context): EventChannel.StreamHandler
 
+    /**
+     * This method is called to print a method.
+     * It should be implemented by subclasses to handle printing functionality.
+     *
+     * @param context The context in which the printing is performed.
+     * @param errorCallBack A callback function to handle errors during printing.
+     */
+    abstract fun printMethod(
+        context: Context,
+        errorCallBack: (String) -> Unit
+    )
+
+    /**
+     * This method is called to beep a method.
+     * It should be implemented by subclasses to handle beeping functionality.
+     *
+     * @param context The context in which the beeping is performed.
+     * @param argument The argument to be passed to the beep method.
+     * @param errorCallBack A callback function to handle errors during beeping.
+     */
+    abstract fun beepMethod(
+        context: Context,
+        argument: Any,
+        errorCallBack: (String) -> Unit
+    )
 }

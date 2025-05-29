@@ -36,7 +36,6 @@ class UrovoScannerService(
             Constant.CameraID.BACK
         }
 
-
         try {
             innerScannerImpl.startScan(
                 context,
@@ -65,6 +64,7 @@ class UrovoScannerService(
             e.printStackTrace()
             eventSink?.error("Scanner error", e.message, null)
         }
+
     }
 
     override fun onCancel(arguments: Any?) {

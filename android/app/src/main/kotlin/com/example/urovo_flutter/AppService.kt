@@ -63,15 +63,26 @@ class AppService {
             return
         }
 
-        module?.doAction(
-            context = context,
-            method = method,
-            argument = argument,
-            result = result
-        )
+        when (method) {
+            ChannelTag.PRINT_METHOD -> {
+                module?.printMethod(context, errorCallBack = { error ->
+                    result.error("Print Error", error, null)
+                })
+            }
+
+            ChannelTag.BEEP_METHOD -> {
+                module?.beepMethod(context, argument, errorCallBack = { error ->
+                    result.error("Beep Error", error, null)
+                })
+            }
+
+            else -> {
+                result.notImplemented()
+            }
+        }
     }
 
-    fun listenScannerStream(context: Context) : EventChannel.StreamHandler {
+    fun listenScannerStream(context: Context): EventChannel.StreamHandler {
         if (module == null) {
             throw IllegalStateException("Module not initialized. Please set the device type first.")
         }
