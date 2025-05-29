@@ -51,6 +51,7 @@ data class PrintModel(
  * @param align Alignment of the print item (left, center, right).
  */
 data class PrintItemModel(
+    val image: PrintImageModel? = null,
     val textLeft: String = "",
     val textCenter: String? = null,
     val textRight: String? = null,
@@ -73,6 +74,24 @@ data class PrintItemModel(
     }
 }
 
+data class PrintImageModel(
+    val imageData: List<Int>,
+    val width: Int,
+    val height: Int
+)
+
+fun Map<*, *>.toPrintImageModel(): PrintImageModel {
+    val image = (this["imageData"] as? String)
+    val width = this["width"] as? Int ?: 384
+    val height = this["height"] as? Int ?: 100
+
+    return PrintImageModel(
+        imageData = (image?.split(",")?.mapNotNull { it.toIntOrNull() } ?: emptyList()),
+        width = width,
+        height = height
+    )
+}
+
 
 fun Map<*, *>.toPrintItemModel(): PrintItemModel {
     val size = this["size"] as? Int
@@ -84,6 +103,9 @@ fun Map<*, *>.toPrintItemModel(): PrintItemModel {
     val textLeft = this["textLeft"] as? String
     val textCenter = this["textCenter"] as? String
     val textRight = this["textRight"] as? String
+    val isSpacing = this["isSpacing"] as? Boolean ?: false
+    val image = (this["image"] as? Map<*, *>).let { it?.toPrintImageModel() }
+
     return PrintItemModel(
         textLeft = textLeft ?: "",
         textCenter = textCenter,
@@ -92,7 +114,9 @@ fun Map<*, *>.toPrintItemModel(): PrintItemModel {
         size = size,
         bold = bold,
         underline = underline,
-        align = align
+        align = align,
+        isSpacing = isSpacing,
+        image = image
     )
 
 }
