@@ -1,12 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:urovo_flutter/src/method/print/print_mixin.dart';
-import 'package:urovo_flutter/src/method/scanner/object/scanner_object.dart';
-import 'package:urovo_flutter/src/urovo_device.dart';
 
 import '../urovo.dart';
-import 'method/beeper/beeper_object.dart';
 import 'method/beeper/beeper_mixin.dart';
-import 'method/print/print_object.dart';
 
 ///Singleton
 class UrovoService with PrintMixin, BeeperMixin {
@@ -26,10 +22,12 @@ class UrovoService with PrintMixin, BeeperMixin {
 
   UrovoService._internal();
 
+  static const _channel =
+      MethodChannel(ChannelTag.channel); // Define the channel
+
   //Do action when init service in first time
   void initService(UrovoDevice? device) async {
-    await const MethodChannel(ChannelTag.channel)
-        .invokeMethod(ChannelTag.getDevice, device?.value);
+    await _channel.invokeMethod(ChannelTag.getDevice, device?.value);
   }
 
   ScannerService get scannerService =>
