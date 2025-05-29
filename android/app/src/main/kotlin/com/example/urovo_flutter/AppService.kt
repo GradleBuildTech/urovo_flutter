@@ -54,12 +54,14 @@ class AppService {
         argument: Any,
         result: MethodChannel.Result
     ) {
-        if (module == null) {
-            result.error("Module not found", "No module found for device: ${device.value}", null)
-            return
-        }
+
         if (method == ChannelTag.GET_DEVICE_METHOD && argument is String) {
             setDevice(DeviceEnum.fromValue(argument))
+            return
+        }
+
+        if (module == null) {
+            result.error("Module not found", "No module found for device: ${device.value}", null)
             return
         }
 
