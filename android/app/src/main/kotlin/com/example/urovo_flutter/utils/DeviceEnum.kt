@@ -6,7 +6,7 @@ enum class DeviceEnum(val value: String) {
 
     companion object {
         fun fromValue(value: String): DeviceEnum {
-            return values().find { it.value == value } ?: OTHER
+            return values().find { it.value == value } ?: UROVO
         }
     }
 }

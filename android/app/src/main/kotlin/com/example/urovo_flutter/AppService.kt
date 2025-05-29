@@ -55,8 +55,13 @@ class AppService {
         result: MethodChannel.Result
     ) {
 
-        if (method == ChannelTag.GET_DEVICE_METHOD && argument is String) {
-            setDevice(DeviceEnum.fromValue(argument))
+        if (method == ChannelTag.GET_DEVICE_METHOD ) {
+            if( argument is String) {
+                setDevice(DeviceEnum.fromValue(argument))
+                result.success(device.value)
+            } else {
+                result.error("Invalid Argument", "Expected a String for device type", null)
+            }
             return
         }
 
