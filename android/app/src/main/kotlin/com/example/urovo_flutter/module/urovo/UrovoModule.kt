@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.urovo_flutter.module.BaseModule
 import com.example.urovo_flutter.module.urovo.service.UrovoBeeperService
 import com.example.urovo_flutter.module.urovo.service.UrovoPrintingService
-import com.example.urovo_flutter.module.urovo.service.UrovoScannerService
+import com.example.urovo_flutter.module.urovo.service.ScannerService
 import com.urovo.sdk.beeper.BeeperImpl
 import com.urovo.sdk.print.PrinterProviderImpl
 import com.urovo.sdk.scanner.InnerScannerImpl
@@ -13,7 +13,7 @@ import io.flutter.plugin.common.EventChannel
 class UrovoModule : BaseModule() {
 
     override fun scannerStream(context: Context): EventChannel.StreamHandler {
-        return UrovoScannerService(
+        return ScannerService(
             context = context, // Context should be passed from the activity or application context
             innerScannerImpl = InnerScannerImpl.getInstance(context),
         )

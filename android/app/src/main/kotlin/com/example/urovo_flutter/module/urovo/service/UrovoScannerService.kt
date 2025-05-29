@@ -12,7 +12,7 @@ import io.flutter.plugin.common.EventChannel
 /// It starts the scanner when a listen event is received and handles success, error, timeout, and cancel events.
 /// It uses the [InnerScannerImpl] class from the Urovo SDK to perform the actual scanning.
 /// The scanner can be configured with a camera type (front or back) and a timeout duration.
-class UrovoScannerService(
+class ScannerService(
     private val innerScannerImpl: InnerScannerImpl,
     private val context: Context
 ) : EventChannel.StreamHandler {

@@ -1,37 +1,56 @@
-import 'package:urovo_flutter/src/method/print/urovo_print_mixin.dart';
+import 'package:flutter/services.dart';
+import 'package:urovo_flutter/src/method/print/print_mixin.dart';
 import 'package:urovo_flutter/src/method/scanner/object/scanner_object.dart';
-import 'package:urovo_flutter/src/method/scanner/urovo_scanner_service.dart';
+import 'package:urovo_flutter/src/urovo_device.dart';
 
+import '../urovo.dart';
 import 'method/beeper/beeper_object.dart';
-import 'method/beeper/urovo_beeper_mixin.dart';
+import 'method/beeper/beeper_mixin.dart';
+import 'method/print/print_object.dart';
 
 ///Singleton
-class UrovoService with UrovoPrintMixin, UrovoBeeperMixin {
+class UrovoService with PrintMixin, BeeperMixin {
   static final UrovoService _instance = UrovoService._internal();
 
-  factory UrovoService() {
+  factory UrovoService({UrovoDevice? device}) {
+    // Initialize the service if it hasn't been initialized yet
+    if (!_instance.isInitialized) {
+      _instance.initService(device ?? UrovoDevice.urovo);
+      _instance.isInitialized = true; // Set the initialized flag
+    }
     return _instance;
   }
 
+  bool isInitialized =
+      false; // Flag to check if the service has been initialized
+
   UrovoService._internal();
 
-  UrovoScannerService get scannerService =>
-      UrovoScannerService(); // Access the scanner service
+  //Do action when init service in first time
+  void initService(UrovoDevice? device) async {
+    await const MethodChannel(ChannelTag.channel)
+        .invokeMethod(ChannelTag.getDevice, device?.value);
+  }
+
+  ScannerService get scannerService =>
+      ScannerService(); // Access the scanner service
 
   // Add your service methods and properties here
-  void doMethodAction<T>(dynamic methodObject) {
+  void doMethodAction<T>(dynamic methodObject) async {
     switch (T) {
-      case UrovoScannerService:
+      case ScannerService:
         scannerService.startScan(
           scannerObject:
               (methodObject is ScannerObject) ? methodObject : ScannerObject(),
         );
         break;
-      case UrovoPrintMixin:
-        onPrint();
+      case PrintMixin:
+        await onPrint(
+          printModel: methodObject is PrintModel ? methodObject : PrintModel(),
+        ); // Assuming PrintModel is defined elsewhere
         break;
-      case UrovoBeeperMixin:
-        onBeeper(
+      case BeeperMixin:
+        await onBeeper(
             beeperObject: (methodObject is BeeperObject) ? methodObject : null);
         break;
       default:
