@@ -1,23 +1,23 @@
 package com.example.urovo_flutter.model
 
-enum class PrintItemAlign(val value: String) {
-    LEFT("left"),
-    CENTER("center"),
-    RIGHT("right");
+enum class PrintItemAlign(val value: Int) {
+    LEFT(0),
+    CENTER(1),
+    RIGHT(2);
 
     companion object {
-        fun fromValue(value: String): PrintItemAlign {
-            return values().find { it.name.equals(value, ignoreCase = true) } ?: LEFT
+        fun fromValue(value: Int): PrintItemAlign {
+            return values().find { it.value == value } ?: LEFT
         }
     }
 }
 
 
 /**
-* PrintModel.kt
-* This file defines the data model for printing items in the Urovo Flutter application.
-* It includes the PrintModel class which contains a list of PrintItemModel objects,
-*  @param items List of PrintItemModel objects representing the items to be printed.
+ * PrintModel.kt
+ * This file defines the data model for printing items in the Urovo Flutter application.
+ * It includes the PrintModel class which contains a list of PrintItemModel objects,
+ *  @param items List of PrintItemModel objects representing the items to be printed.
  * @param spacing Optional spacing between items in the print layout.
  * @param cutPaper Optional flag to indicate whether to cut the paper after printing.
  * @param printWidth Optional width of the print area.
@@ -25,7 +25,7 @@ enum class PrintItemAlign(val value: String) {
  * @param printMode Optional mode for printing, such as "normal", "bold", or "underline".
  * @param printAlign Optional alignment for the printed text, such as "left", "center", or "right".
  *
-* */
+ * */
 data class PrintModel(
     val items: List<PrintItemModel> = emptyList(),
     val spacing: Int? = 8,
@@ -57,20 +57,19 @@ data class PrintItemModel(
     val qrCode: String? = null,
     val size: Int? = null,
     val bold: Boolean? = null,
+    val isSpacing: Boolean = false,
     val underline: Boolean? = null,
     val align: PrintItemAlign? = PrintItemAlign.LEFT,
 ) {
     init {
-        val hasText = listOf(textLeft, textCenter, textRight).any { !it.isNullOrBlank() }
-        val hasQrCode = !qrCode.isNullOrBlank()
-
-        require(hasText.xor(hasQrCode)) {
-            "Exactly one of (textLeft/textCenter/textRight) or qrCode must be non-null and non-blank."
-        }
-
-        require(size == null || size > 0) {
-            "Size must be greater than 0 if provided."
-        }
+//        val hasText = listOf(textLeft, textCenter, textRight).any { !it.isNullOrBlank() }
+//        val hasQrCode = !qrCode.isNullOrBlank()
+//
+//        if(isSpacing.not()) {
+//            require(hasText.xor(hasQrCode)) {
+//                "Exactly one of (textLeft/textCenter/textRight) or qrCode must be non-null and non-blank."
+//            }
+//        }
     }
 }
 
@@ -79,7 +78,7 @@ fun Map<*, *>.toPrintItemModel(): PrintItemModel {
     val size = this["size"] as? Int
     val bold = this["bold"] as? Boolean
     val underline = this["underline"] as? Boolean
-    val alignValue = this["align"] as? String
+    val alignValue = this["align"] as? Int
     val align = alignValue?.let { PrintItemAlign.fromValue(it) } ?: PrintItemAlign.LEFT
     val qrCode = this["qrCode"] as? String
     val textLeft = this["textLeft"] as? String

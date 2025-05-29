@@ -2,7 +2,6 @@ package com.example.urovo_flutter.module.urovo.service
 
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import com.example.urovo_flutter.model.toPrintModel
 import com.urovo.sdk.print.PrinterProviderImpl
 import kotlinx.coroutines.CoroutineScope
@@ -34,30 +33,36 @@ internal class UrovoPrintingService(
                     return@launch
                 }
 
+
                 isRunning = true
                 printerProvider.initPrint()
                 val status = printerProvider.status
-                Log.d("PrinterStatus", "Status: $status")
 
                 printerProvider.setGray(0)
 
-                val fontPath = Environment.getExternalStorageDirectory()?.path + "/CALIBRI.ttf"
+                val fontPath =
+                    Environment.getExternalStorageDirectory().path + "/CALIBRI.ttf"
 
                 for (item in printModel.items) {
                     val format = Bundle().apply {
-                        putInt("font", 1)
-                        putString("fontName", fontPath)
                         putInt("lineHeight", 10)
+                        putString("fontName", fontPath)
+                        putInt("font", item.size ?: 1)
                         item.bold?.let { putBoolean("fontBold", it) }
                     }
 
+
                     when {
                         item.qrCode != null -> {
-                            format.putInt("extraHeight", 300)
-                            printerProvider.addQrCode(format, item.qrCode)
+                            printerProvider.addQrCode(Bundle().apply {
+                                putInt("align", item.align?.value ?: 1)
+                                putInt("offset", -1)
+                                putInt("expectedHeight", 300)
+                            }, item.qrCode)
                         }
                         item.textCenter == null && item.textRight == null -> {
-                            printerProvider.addTextOnlyLeft(format, item.textLeft)
+                            format.putInt("align", item.align?.value ?: 1)
+                            printerProvider.addText(format, item.textLeft)
                         }
                         item.textCenter == null -> {
                             printerProvider.addTextLeft_Right(
@@ -75,16 +80,17 @@ internal class UrovoPrintingService(
                             )
                         }
                     }
-                    printerProvider.feedLine(3)
-
                     // Additional spacing from print model or default 1 line
                     printModel.spacing?.let {
                         printerProvider.feedLine(it)
                     } ?: printerProvider.feedLine(1)
                 }
 
+                printerProvider.feedLine(4)
                 printerProvider.feedLine(-1)
-                val result = printerProvider.startPrint()
+                printerProvider.startPrint()
+                printerProvider.close()
+
 
                 // Consider logging or handling the print result here if needed
 

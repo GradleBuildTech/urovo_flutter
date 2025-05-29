@@ -27,6 +27,10 @@ android {
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
+    packagingOptions {
+        exclude 'META-INF/retrofit.kotlin_module'
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -66,4 +70,5 @@ flutter {
 
 dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    implementation('com.journeyapps:zxing-android-embedded:3.5.0')
 }

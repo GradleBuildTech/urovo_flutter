@@ -1,6 +1,7 @@
 package com.example.urovo_flutter
 
 import android.content.Context
+import android.util.Log
 import com.example.urovo_flutter.module.BaseModule
 import com.example.urovo_flutter.module.urovo.UrovoModule
 import com.example.urovo_flutter.utils.ChannelTag
@@ -8,28 +9,23 @@ import com.example.urovo_flutter.utils.DeviceEnum
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 
-/**
- * AppService is a singleton service class that manages the state of the application.
- * It can be used to start and stop the service, and to set the device type.
- */
-class AppService {
+class AppService private constructor() {
+
+    private var isRunning = false
+    private var device: DeviceEnum = DeviceEnum.UROVO
+    // Set the default module to UrovoModule
+    private var module: BaseModule = UrovoModule()
+
     companion object {
+        @Volatile
         private var instance: AppService? = null
 
         fun getInstance(): AppService {
-            if (instance == null) {
-                instance = AppService()
+            return instance ?: synchronized(this) {
+                instance ?: AppService().also { instance = it }
             }
-            return instance!!
         }
     }
-
-    // Add any properties or methods needed for the service
-    private var isRunning: Boolean = false
-
-    private var device: DeviceEnum = DeviceEnum.UROVO
-
-    private var module: BaseModule? = null
 
     fun startService() {
         isRunning = true
@@ -43,10 +39,9 @@ class AppService {
         this.device = device
         module = when (device) {
             DeviceEnum.UROVO -> UrovoModule()
-            DeviceEnum.OTHER -> null
+            DeviceEnum.OTHER -> UrovoModule()
         }
     }
-
 
     fun doAction(
         context: Context,
@@ -54,47 +49,35 @@ class AppService {
         argument: Any,
         result: MethodChannel.Result
     ) {
-
-        if (method == ChannelTag.GET_DEVICE_METHOD ) {
-            if( argument is String) {
-                setDevice(DeviceEnum.fromValue(argument))
-                result.success(device.value)
-            } else {
-                result.error("Invalid Argument", "Expected a String for device type", null)
-            }
-            return
-        }
-
-        if (module == null) {
-            result.error("Module not found", "No module found for device: ${device.value}", null)
-            return
-        }
-
         when (method) {
+            ChannelTag.GET_DEVICE_METHOD -> {
+                if (argument is String) {
+                    setDevice(DeviceEnum.fromValue(argument))
+                    result.success(device.value)
+                } else {
+                    result.error("Invalid Argument", "Expected a String for device type", null)
+                }
+                return
+            }
+
             ChannelTag.PRINT_METHOD -> {
-                module?.printMethod(context, errorCallBack = { error ->
-                    result.error("Print Error", error, null)
+                module.printMethod(context, argument, errorCallBack = {
+                    Log.e("AppService", "Print error: $it")
+                    result.error("Print Error", it, null)
                 })
             }
 
             ChannelTag.BEEP_METHOD -> {
-                module?.beepMethod(context, argument, errorCallBack = { error ->
-                    result.error("Beep Error", error, null)
+                module.beepMethod(context, argument, errorCallBack = {
+                    result.error("Beep Error", it, null)
                 })
             }
 
-            else -> {
-                result.notImplemented()
-            }
+            else -> result.notImplemented()
         }
     }
 
     fun listenScannerStream(context: Context): EventChannel.StreamHandler {
-        if (module == null) {
-            throw IllegalStateException("Module not initialized. Please set the device type first.")
-        }
-        return module?.scannerStream(context)
-            ?: throw IllegalStateException("Module not initialized or does not support scanner stream")
+        return module.scannerStream(context)
     }
-
 }

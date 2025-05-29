@@ -23,6 +23,7 @@ abstract class BaseModule {
      */
     abstract fun printMethod(
         context: Context,
+        argument: Any?,
         errorCallBack: (String) -> Unit
     )
 

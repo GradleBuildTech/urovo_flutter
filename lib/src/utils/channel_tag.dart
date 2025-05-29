@@ -3,5 +3,5 @@ class ChannelTag {
   static const String eventMethodScanner = 'scanner_event_channel';
   static const String methodPrint = 'print';
   static const String methodBeeper = 'beep';
-  static const String getDevice = 'getDevice';
+  static const String getDevice = 'get_device';
 }

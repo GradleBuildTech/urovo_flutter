@@ -1,9 +1,9 @@
 enum PrintItemAlign {
-  left("left"),
-  center("center"),
-  right("right");
+  left(0),
+  center(1),
+  right(2);
 
-  final String value;
+  final int value;
 
   const PrintItemAlign(this.value);
 }
@@ -48,6 +48,7 @@ class PrintItemModel {
   final String? textCenter;
   final String? textRight;
   final String? qrCode;
+  final bool isSpacing;
   final int? size;
   final bool? bold;
   final bool? underline;
@@ -56,27 +57,27 @@ class PrintItemModel {
   PrintItemModel({
     this.textLeft = '',
     this.textCenter,
+    this.isSpacing = false,
     this.textRight,
     this.qrCode,
     this.size,
     this.bold,
     this.underline,
     this.align = PrintItemAlign.left,
-  })  : assert(
-          ((textLeft.trim().isNotEmpty ||
-                  (textCenter?.trim().isNotEmpty ?? false) ||
-                  (textRight?.trim().isNotEmpty ?? false)) ^
-              (qrCode?.trim().isNotEmpty ?? false)),
+  }) : assert(
+          isSpacing
+              ? true
+              : ((textLeft.isNotEmpty ||
+                      (textCenter?.trim().isNotEmpty ?? false) ||
+                      (textRight?.trim().isNotEmpty ?? false)) ^
+                  (qrCode?.trim().isNotEmpty ?? false)),
           'Exactly one of (textLeft/textCenter/textRight) or qrCode must be non-null and non-blank.',
-        ),
-        assert(
-          size == null || size > 0,
-          'Size must be greater than 0 if provided.',
         );
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {
       'textLeft': textLeft,
+      'isSpacing': isSpacing,
     };
 
     if (textCenter != null) data['textCenter'] = textCenter;

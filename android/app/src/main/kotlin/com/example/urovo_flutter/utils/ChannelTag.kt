@@ -4,7 +4,7 @@ internal class ChannelTag {
     companion object {
         const val CHANNEL = "com.example.flutter_native_channel/urovo"
 
-        const val GET_DEVICE_METHOD = "getDevice"
+        const val GET_DEVICE_METHOD = "get_device"
 
         const val SCANNER_CHANNEL = "scanner_event_channel"
 

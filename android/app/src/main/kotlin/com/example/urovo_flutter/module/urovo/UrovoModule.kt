@@ -19,9 +19,9 @@ class UrovoModule : BaseModule() {
         )
     }
 
-    override fun printMethod(context: Context, errorCallBack: (String) -> Unit) {
+    override fun printMethod(context: Context, argument: Any?, errorCallBack: (String) -> Unit) {
         val printService = UrovoPrintingService(PrinterProviderImpl.getInstance(context))
-        printService.onStart(errorCallBack)
+        printService.onStart(arg = argument, errorCallBack = errorCallBack)
     }
 
     override fun beepMethod(context: Context, argument: Any, errorCallBack: (String) -> Unit) {
