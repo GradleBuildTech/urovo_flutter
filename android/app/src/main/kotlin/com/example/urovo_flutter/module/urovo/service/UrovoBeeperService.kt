@@ -7,6 +7,7 @@ import com.urovo.sdk.beeper.BeeperImpl
 internal class UrovoBeeperService(
     private val beeperProvider: BeeperImpl
 ): BaseService() {
+
     override fun onStart(arg: Any?, errorCallBack: ((String) -> Unit)?) {
         if(arg is Map<*, *>) {
             val model = arg.toBeeperModel()
