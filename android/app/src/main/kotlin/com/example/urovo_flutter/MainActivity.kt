@@ -30,6 +30,13 @@ class MainActivity : FlutterActivity() {
         ).setStreamHandler(
            appService.listenScannerStream(context = this)
         )
+
+        EventChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            ChannelTag.SEARCH_MAG_CARD_CHANNEL
+        ).setStreamHandler(
+            appService.listenSearchMagCardStream(context = this)
+        )
     }
 
 }

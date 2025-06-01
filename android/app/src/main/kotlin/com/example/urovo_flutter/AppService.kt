@@ -80,4 +80,8 @@ class AppService private constructor() {
     fun listenScannerStream(context: Context): EventChannel.StreamHandler {
         return module.scannerStream(context)
     }
+
+    fun listenSearchMagCardStream(context: Context): EventChannel.StreamHandler {
+        return module.searchMagCardStream(context)
+    }
 }

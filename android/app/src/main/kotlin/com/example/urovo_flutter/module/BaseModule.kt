@@ -15,6 +15,15 @@ abstract class BaseModule {
     abstract fun scannerStream(context: Context): EventChannel.StreamHandler
 
     /**
+     * This method is called to provide a stream handler for the mag card events.
+     * It should be implemented by subclasses to handle mag card events.
+     *
+     * @param context The context in which the mag card stream is created.
+     * @return An instance of [EventChannel.StreamHandler] that handles mag card events.
+     */
+    abstract fun searchMagCardStream(context: Context): EventChannel.StreamHandler
+
+    /**
      * This method is called to print a method.
      * It should be implemented by subclasses to handle printing functionality.
      *

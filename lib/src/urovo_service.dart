@@ -1,11 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:urovo_flutter/src/method/print/print_mixin.dart';
+import 'package:urovo_flutter/src/method/search_mag_card/search_mag_card_service.dart';
 
 import '../urovo.dart';
 import 'method/beeper/beeper_mixin.dart';
 
 ///Singleton
-class UrovoService with PrintMixin, BeeperMixin {
+class UrovoService with PrintMixin, BeeperMixin, SearchMagCardService {
   static final UrovoService _instance = UrovoService._internal();
 
   factory UrovoService({UrovoDevice? device}) {

@@ -16,7 +16,7 @@ import java.util.Hashtable
 internal class UrovoEmvService(
     private val context: Context,
     private val mEmvNfcKernelApi: EmvNfcKernelApi
-): EventChannel.StreamHandler {
+) : EventChannel.StreamHandler {
 
     private var eventSink: EventChannel.EventSink? = null
     private var mEmvListener: EmvListener? = null
@@ -24,7 +24,7 @@ internal class UrovoEmvService(
     override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
         eventSink = events
         val emvModel = (arguments as? Map<*, *>)?.toEmvModel()
-        if(emvModel != null) {
+        if (emvModel != null) {
             mEmvListener = UrovoEmvListener()
             mEmvNfcKernelApi.setListener(mEmvListener)
             mEmvNfcKernelApi.setContext(context)
@@ -35,7 +35,6 @@ internal class UrovoEmvService(
     }
 
     override fun onCancel(arguments: Any?) {
-        TODO("Not yet implemented")
     }
 
     private fun startKernel(
@@ -58,7 +57,8 @@ internal class UrovoEmvService(
                 }// Check Card time out .Second
 
                 data["enableBeeper"] = emvModel.enableBeeper // Enable beeper during EMV process
-                data["enableTapSwipeCollision"] = emvModel.enableTapSwipeCollision // Enable tap and swipe collision handling
+                data["enableTapSwipeCollision"] =
+                    emvModel.enableTapSwipeCollision // Enable tap and swipe collision handling
                 mEmvNfcKernelApi.startKernel(data)
             } catch (e: Exception) {
                 eventSink?.error(

@@ -8,6 +8,8 @@ internal class ChannelTag {
 
         const val SCANNER_CHANNEL = "scanner_event_channel"
 
+        const val SEARCH_MAG_CARD_CHANNEL = "search_mag_card_channel"
+
         const val BEEP_METHOD = "beep"
 
         const val PRINT_METHOD = "print"

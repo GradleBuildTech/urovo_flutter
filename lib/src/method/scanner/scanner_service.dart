@@ -10,7 +10,7 @@ import 'package:urovo_flutter/src/utils/channel_tag.dart';
 /// methods to start and stop scanning.
 /// It also provides a dispose method to clean up resources.
 
-class ScannerService {
+mixin class ScannerService {
   ///Singleton
 
   static final ScannerService _instance = ScannerService._internal();
