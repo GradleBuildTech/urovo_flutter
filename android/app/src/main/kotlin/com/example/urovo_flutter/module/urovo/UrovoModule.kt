@@ -4,8 +4,10 @@ import android.content.Context
 import com.example.urovo_flutter.module.BaseModule
 import com.example.urovo_flutter.module.urovo.service.UrovoBeeperService
 import com.example.urovo_flutter.module.urovo.service.UrovoPrintingService
+import com.example.urovo_flutter.module.urovo.service.emv.UrovoEmvService
 import com.example.urovo_flutter.module.urovo.service.stream.ScannerService
 import com.example.urovo_flutter.module.urovo.service.stream.UrovoMagCardService
+import com.urovo.i9000s.api.emv.EmvNfcKernelApi
 import com.urovo.sdk.beeper.BeeperImpl
 import com.urovo.sdk.magcard.MagCardReaderImpl
 import com.urovo.sdk.print.PrinterProviderImpl
@@ -23,6 +25,13 @@ class UrovoModule : BaseModule() {
 
     override fun searchMagCardStream(context: Context): EventChannel.StreamHandler {
         return UrovoMagCardService(magCardReaderImpl = MagCardReaderImpl.getInstance())
+    }
+
+    override fun emvStream(context: Context): EventChannel.StreamHandler {
+        return UrovoEmvService(
+            context = context,
+            mEmvNfcKernelApi = EmvNfcKernelApi.getInstance()
+        )
     }
 
     override fun printMethod(context: Context, argument: Any?, errorCallBack: (String) -> Unit) {

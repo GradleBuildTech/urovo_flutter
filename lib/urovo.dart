@@ -18,3 +18,7 @@ export 'package:urovo_flutter/src/urovo_device.dart';
 ///[MagCard]
 export 'package:urovo_flutter/src/method/search_mag_card/search_mag_card_service.dart';
 export 'package:urovo_flutter/src/method/search_mag_card/mag_card_information.dart';
+
+///[EMV]
+export 'package:urovo_flutter/src/method/emv/emv_service.dart';
+export 'package:urovo_flutter/src/method/emv/object/emv_request.dart';

@@ -13,7 +13,7 @@ import '../../../urovo.dart';
 /// import 'package:urovo_flutter/urovo.dart';
 /// void main() {
 ///  final service = SearchMagCardService();
-/// service.startListening(
+/// service.searchMagCardService.startListening(
 ///    onMagCardEvent: (magCardEvent) {
 ///     print('Magnetic Card Event: ${magCardEvent.toJson()}');
 ///

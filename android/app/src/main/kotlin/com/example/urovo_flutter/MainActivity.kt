@@ -37,6 +37,13 @@ class MainActivity : FlutterActivity() {
         ).setStreamHandler(
             appService.listenSearchMagCardStream(context = this)
         )
+
+        EventChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            ChannelTag.EMV_CHANNEL
+        ).setStreamHandler(
+            appService.listenEmvStream(context = this)
+        )
     }
 
 }

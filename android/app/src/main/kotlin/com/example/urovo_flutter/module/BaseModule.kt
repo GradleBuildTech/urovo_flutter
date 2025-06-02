@@ -18,10 +18,20 @@ abstract class BaseModule {
      * This method is called to provide a stream handler for the mag card events.
      * It should be implemented by subclasses to handle mag card events.
      *
-     * @param context The context in which the mag card stream is created.
+     * @param context The context in which the mag card stream is created.♦
      * @return An instance of [EventChannel.StreamHandler] that handles mag card events.
      */
     abstract fun searchMagCardStream(context: Context): EventChannel.StreamHandler
+
+    /**
+     * This method is called to provide a stream handler for the EMV events.
+     * It should be implemented by subclasses to handle EMV events.
+     *
+     * @param context The context in which the EMV stream is created.
+     * @return An instance of [EventChannel.StreamHandler] that handles EMV events.
+     */
+    abstract fun emvStream(context: Context): EventChannel.StreamHandler
+
 
     /**
      * This method is called to print a method.
@@ -49,4 +59,5 @@ abstract class BaseModule {
         argument: Any,
         errorCallBack: (String) -> Unit
     )
+
 }

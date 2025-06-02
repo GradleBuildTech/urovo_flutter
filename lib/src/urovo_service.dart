@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:urovo_flutter/src/method/emv/emv_service.dart';
 import 'package:urovo_flutter/src/method/print/print_mixin.dart';
 
 import '../urovo.dart';
@@ -39,4 +40,6 @@ class UrovoService with PrintMixin, BeeperMixin {
 
   SearchMagCardService get searchMagCardService =>
       SearchMagCardService(); // Access the magnetic card service
+
+  EmvService get emvService => EmvService(); // Access the EMV service
 }

@@ -84,4 +84,8 @@ class AppService private constructor() {
     fun listenSearchMagCardStream(context: Context): EventChannel.StreamHandler {
         return module.searchMagCardStream(context)
     }
+
+    fun listenEmvStream(context: Context): EventChannel.StreamHandler {
+        return module.emvStream(context)
+    }
 }
