@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:urovo_flutter/src/method/search_mag_card/mag_card_information.dart';
 
 import '../../../urovo.dart';
 
@@ -28,7 +27,17 @@ import '../../../urovo.dart';
 /// ///  // Dispose the service when done
 ///   ///  service.dispose();
 /// /// ```
-mixin SearchMagCardService {
+class SearchMagCardService {
+  /// Singleton instance of [SearchMagCardService].
+  static final SearchMagCardService _instance =
+      SearchMagCardService._internal();
+
+  factory SearchMagCardService() {
+    return _instance;
+  }
+
+  SearchMagCardService._internal();
+
   static const _channel = EventChannel(ChannelTag.searchMagCard);
 
   StreamSubscription? _subscription;
